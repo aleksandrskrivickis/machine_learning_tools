@@ -36,7 +36,7 @@ def is_grey_scale(img_path):
     except Exception as e:
         print("Exception in is_grey_scale()" + str(e))
 ########################################################################
-def split_dataset_into_test_and_train_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCALE_IMG_DIR):
+def split_dataset_into_color_and_grayscale_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCALE_IMG_DIR):
     #Stats
     totalFiles = sum([len(files) for r, d, files in os.walk(ALL_DATA_DIR)])
     proceFiles = 1
@@ -47,14 +47,14 @@ def split_dataset_into_test_and_train_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCA
         os.makedirs(GRAYSCALE_IMG_DIR)
         print("Successfully cleaned/created directory " + GRAYSCALE_IMG_DIR)
     else:
-        print("Refusing to delete testing data directory " + GRAYSCALE_IMG_DIR + " as we prevent you from doing stupid things!")
+        print("Refusing to delete grayscale data directory " + GRAYSCALE_IMG_DIR + " as we prevent you from doing stupid things!")
 
     if COLOUR_IMG_DIR.count(SEPARATOR) > 1:
         shutil.rmtree(COLOUR_IMG_DIR, ignore_errors=True)
         os.makedirs(COLOUR_IMG_DIR)
         print("Successfully cleaned/created directory " + COLOUR_IMG_DIR)
     else:
-        print("Refusing to delete testing data directory " + COLOUR_IMG_DIR + " as we prevent you from doing stupid things!")
+        print("Refusing to delete color data directory " + COLOUR_IMG_DIR + " as we prevent you from doing stupid things!")
 
     num_color_imgs = 0
     num_grayscale_imgs = 0
@@ -67,14 +67,14 @@ def split_dataset_into_test_and_train_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCA
         if category_name == os.path.basename(ALL_DATA_DIR):
             continue
 
-        training_data_category_dir = COLOUR_IMG_DIR + SEPARATOR + category_name
-        testing_data_category_dir = GRAYSCALE_IMG_DIR + SEPARATOR + category_name
+        color_img_cat_dir = COLOUR_IMG_DIR + SEPARATOR + category_name
+        grayscale_img_cat_dir = GRAYSCALE_IMG_DIR + SEPARATOR + category_name
 
-        if not os.path.exists(training_data_category_dir):
-            os.mkdir(training_data_category_dir)
+        if not os.path.exists(color_img_cat_dir):
+            os.mkdir(color_img_cat_dir)
 
-        if not os.path.exists(testing_data_category_dir):
-            os.mkdir(testing_data_category_dir)
+        if not os.path.exists(grayscale_img_cat_dir):
+            os.mkdir(grayscale_img_cat_dir)
 
         for file in files:
             input_file = os.path.join(subdir, file)
@@ -82,13 +82,13 @@ def split_dataset_into_test_and_train_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCA
                 try:
                     shutil.copy(input_file, GRAYSCALE_IMG_DIR + SEPARATOR + category_name + SEPARATOR + file)
                 except Exception as e:
-                    print("Exception in split_dataset_into_test_and_train_sets()" + str(e))
+                    print("Exception in split_dataset_into_color_and_grayscale_sets()" + str(e))
                 num_grayscale_imgs += 1
             else:
                 try:
                     shutil.copy(input_file, COLOUR_IMG_DIR + SEPARATOR + category_name + SEPARATOR + file)
                 except Exception as e:
-                    print("Exception in split_dataset_into_test_and_train_sets()" + str(e))
+                    print("Exception in split_dataset_into_color_and_grayscale_sets()" + str(e))
                 num_color_imgs += 1
                 
             timeElapsed = time.time() - startTime
@@ -97,8 +97,8 @@ def split_dataset_into_test_and_train_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCA
             sys.stdout.write("\rTotal time left - " + str(timeLeft).split(".")[0] + " s")
             sys.stdout.flush()
 
-    print("\nProcessed " + str(num_color_imgs) + " training files.")
-    print("Processed " + str(num_grayscale_imgs) + " testing files.")
+    print("\nProcessed " + str(num_color_imgs) + " color files.")
+    print("Processed " + str(num_grayscale_imgs) + " grayscale files.")
     print("Time elapsed - " + str(timeElapsed) + " s")
 ########################################################################
 def getAllArgs():
@@ -131,4 +131,4 @@ def getAllArgs():
 #Code
 definePlatform()
 getAllArgs()
-split_dataset_into_test_and_train_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCALE_IMG_DIR)
+split_dataset_into_color_and_grayscale_sets(ALL_DATA_DIR, COLOUR_IMG_DIR, GRAYSCALE_IMG_DIR)
