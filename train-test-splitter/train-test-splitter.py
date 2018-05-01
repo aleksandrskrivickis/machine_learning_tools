@@ -70,7 +70,7 @@ def split_dataset_into_test_and_train_sets(all_data_dir, training_data_dir, test
             sys.stdout.flush()
     print("\nProcessed " + str(num_training_files) + " training files.")
     print("Processed " + str(num_testing_files) + " testing files.")
-    print("Time elapsed - " + timeElapsed + " s")
+    print("Time elapsed - " + str(timeElapsed) + " s")
 
 def getAllArgs():
     global all_data_dir, training_data_dir, testing_data_dir, testing_data_pct
